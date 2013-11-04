@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-[ -z $1 ] && echo "usage: colgrep <pattern> [color] [file]" 1>&2 && exit 1
+[ -z "$1" ] && echo "usage: colgrep <pattern> [color] [file]" 1>&2 && exit 1
 pattern=$1
 color="0;32"
 if [ ! -f $2 ]; then
@@ -15,6 +15,7 @@ if [ ! -f $2 ]; then
   esac
   shift
 fi
-# sed ''/${pattern}/s//`printf "\033[${color}m${pattern}\033[0m"`/g'' $2
-sed ''/${pattern}/s//`printf "\033[${color}m${pattern}\033[0m"`/g'' $2
 
+while read line; do
+  echo "$line" | sed ''/"${pattern}"/s//`printf "\033[%sm%s\033[0m" "$color" "$pattern"`/g'' $2
+done
