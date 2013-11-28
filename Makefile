@@ -11,6 +11,7 @@ install:
 
 uninstall:
 	rm -f ${BINDIR}/colgrep
+	rm -f ${MANDIR}/man1/colgrep.1
 
 test:
 	@bats test/colgrep.bats
