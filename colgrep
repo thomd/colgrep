@@ -1,21 +1,27 @@
-#!/usr/bin/env bash
-set -e
+#!/usr/bin/env python
+import sys
+import re
+import argparse
 
-[ -z "$1" ] && echo "usage: colgrep <pattern> [color] [file]" 1>&2 && exit 1
-pattern=$1
-color="0;32"
-if [ ! -f $2 ]; then
-  case $2 in
-    green) color="0;32" ;;
-    red) color="0;31" ;;
-    RED) color="38;5;196" ;;
-    blue) color="0;36" ;;
-    yellow) color="0;33" ;;
-    grey|gray) color="0;30" ;;
-  esac
-  shift
-fi
+colors = {'red': '\033[0;31m', 'green': '\033[0;32m', 'reset': '\033[0m'}
 
-while read line; do
-  echo "$line" | sed ''/"${pattern}"/s//`printf "\033[%sm%s\033[0m" "$color" "$pattern"`/g'' $2
-done
+def colgrep(args):
+	'''
+	colorize pattern
+	'''
+	pattern = args.pattern[0]
+	color = colors.get(args.color, colors.get('green'))
+	pre = re.compile("(" + pattern + ")")
+	for line in sys.stdin.readlines():
+		out = pre.sub(color + "\g<1>" + colors.get('reset'), line)
+		sys.stdout.write(out)
+
+def main():
+	parser = argparse.ArgumentParser()
+	parser.add_argument('pattern', nargs='+', metavar='WORD', help='pattern to be colored')
+	parser.add_argument('--color', '-c', help='highlight color')
+	args = parser.parse_args()
+	colgrep(args)
+
+if __name__ == '__main__':
+	main()
