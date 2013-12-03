@@ -1,5 +1,7 @@
 # colgrep(1) 
 
+[![Build Status](https://travis-ci.org/thomd/colgrep.png)](https://travis-ci.org/thomd/colgrep)
+
 A lightweigth colorizer for STDOUT like grep but prints all lines.
 
 To always recognize what's important!
