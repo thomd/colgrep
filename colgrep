@@ -7,13 +7,13 @@ colors = {'red': '\033[0;31m', 'green': '\033[0;32m', 'reset': '\033[0m'}
 
 def colgrep(args):
 	'''
-	colorize pattern
+	create a regular expression of all search pattern and replace every pattern
+	surounded by ansi-color directives in every line.
 	'''
-	pattern = args.pattern[0]
 	color = colors.get(args.color, colors.get('green'))
-	pre = re.compile("(" + pattern + ")")
+	exp = re.compile("(" + "|".join(args.pattern) + ")")
 	for line in sys.stdin.readlines():
-		out = pre.sub(color + "\g<1>" + colors.get('reset'), line)
+		out = exp.sub(color + "\g<1>" + colors.get('reset'), line)
 		sys.stdout.write(out)
 
 def main():

@@ -17,3 +17,11 @@ load test_helper
     [ "${lines[0]}" == `echo -e "foo\033[0;31mbar\033[0mbaz"` ]
   }
 }
+
+@test "colgrep should color multiple pattern within a piped string" {
+  echo "foobarfoobaz" | {
+    run colgrep bar baz
+    [ $status -eq 0 ]
+    [ "${lines[0]}" == `echo -e "foo\033[0;32mbar\033[0mfoo\033[0;32mbaz\033[0m"` ]
+  }
+}
