@@ -3,9 +3,22 @@ import sys
 import re
 import argparse
 
-colors = {'red': '\033[0;31m', 'green': '\033[0;32m', 'reset': '\033[0m'}
+colors = {
+	'yellow': '\033[0;33m',
+	'blue': '\033[0;34m',
+	'red': '\033[0;31m',
+	'green': '\033[0;32m'
+}
+reset = '\033[0m'
 
-def colgrep(args):
+def list_colors():
+	'''
+	list all available color names colored
+	'''
+	for color in colors:
+		sys.stdout.write(" " + colors[color] + color + reset + "\n")
+
+def colorize(args):
 	'''
 	create a regular expression of all search pattern and replace every pattern
 	surounded by ansi-color directives in every line.
@@ -13,15 +26,19 @@ def colgrep(args):
 	color = colors.get(args.color, colors.get('green'))
 	exp = re.compile("(" + "|".join(args.pattern) + ")")
 	for line in sys.stdin.readlines():
-		out = exp.sub(color + "\g<1>" + colors.get('reset'), line)
+		out = exp.sub(color + "\g<1>" + reset, line)
 		sys.stdout.write(out)
 
 def main():
 	parser = argparse.ArgumentParser()
-	parser.add_argument('pattern', nargs='+', metavar='WORD', help='pattern to be colored')
-	parser.add_argument('--color', '-c', help='highlight color')
+	parser.add_argument('pattern', nargs='*', metavar='WORD', help='pattern to be colored')
+	parser.add_argument('-c', '--color', help='highlighting color')
+	parser.add_argument('--colors', action='store_true', help='list available colors')
 	args = parser.parse_args()
-	colgrep(args)
+	if args.colors:
+		list_colors()
+	else:
+		colorize(args)
 
 if __name__ == '__main__':
 	main()
