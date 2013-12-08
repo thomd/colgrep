@@ -30,9 +30,10 @@ def colorize(args):
 		sys.stdout.write(out)
 
 def main():
-	parser = argparse.ArgumentParser()
+	parser = argparse.ArgumentParser(
+		description="to always recognize what's important!")
 	parser.add_argument('pattern', nargs='*', metavar='WORD', help='pattern to be colored')
-	parser.add_argument('-c', '--color', help='highlighting color')
+	parser.add_argument('-c', '--color', help='highlighting color (default: green)')
 	parser.add_argument('--colors', action='store_true', help='list available colors')
 	args = parser.parse_args()
 	if args.colors:
