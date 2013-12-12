@@ -2,21 +2,23 @@
 
 [![Build Status](https://travis-ci.org/thomd/colgrep.png)](https://travis-ci.org/thomd/colgrep)
 
-A lightweigth colorizer for STDOUT like grep but prints all lines.
+A lightweigth colorizer for a stdin stream. Like grep, but prints all lines.
 
 To always recognize what's important!
 
 ### Syntax
 
-    colgrep <pattern> [color] [file]
+    colgrep [PATTERN [PATTERN ...]] [-c COLOR]
 
 ### Examples
 
-    colgrep 127.0.0.1 access.log                      # highlight requests from localhost
+Hightlight errors and warnings in a streaming error log
 
-    tail -f error.log | colgrep error
+    tail -f error.log | colgrep error warn -c red
 
-    curl -I google.com | colgrep Location             # highlight HTTP redirects
+Highlight HTTP redirects
+
+    curl -IL google.com | colgrep Location    
 
 ###  Installation
 
