@@ -9,37 +9,33 @@ colors = {
 	'red': '\033[0;31m',
 	'green': '\033[0;32m'
 }
+default_color = 'green'
 reset = '\033[0m'
 
-def list_colors():
+def help_colors():
 	'''
-	list all available color names colored
+	help text of available color names
 	'''
-	for color in colors:
-		sys.stdout.write(" " + colors[color] + color + reset + "\n")
+	color_list = ", ".join(map((lambda color: (color, color + " (default)")[color is default_color]), colors.keys()))
+	return "highlighting color: %s" % color_list
 
 def colorize(args):
 	'''
 	create a regular expression of all search pattern and replace every pattern
 	surounded by ansi-color directives in every line.
 	'''
-	color = colors.get(args.color, colors.get('green'))
+	color = colors.get(args.color, colors.get(default_color))
 	exp = re.compile("(" + "|".join(args.pattern) + ")")
 	for line in sys.stdin.readlines():
 		out = exp.sub(color + "\g<1>" + reset, line)
 		sys.stdout.write(out)
 
 def main():
-	parser = argparse.ArgumentParser(
-		description="to always recognize what's important!")
-	parser.add_argument('pattern', nargs='*', metavar='WORD', help='pattern to be colored')
-	parser.add_argument('-c', '--color', help='highlighting color (default: green)')
-	parser.add_argument('--colors', action='store_true', help='list available colors')
+	parser = argparse.ArgumentParser(description="to always recognize what's important!")
+	parser.add_argument('pattern', nargs='+', metavar='PATTERN', help='pattern to be highlighted')
+	parser.add_argument('-c', dest='color', help=help_colors())
 	args = parser.parse_args()
-	if args.colors:
-		list_colors()
-	else:
-		colorize(args)
+	colorize(args)
 
 if __name__ == '__main__':
 	main()

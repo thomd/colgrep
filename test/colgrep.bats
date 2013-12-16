@@ -42,11 +42,5 @@ load test_helper
   }
 }
 
-@test "colgrep should list available colors with --colors option" {
-  run colgrep --colors
-  [ $status -eq 0 ]
-  [ "${lines[2]}" == `echo -e " \033[0;31mred\033[0m"` ]
-  [ "${lines[1]}" == `echo -e " \033[0;32mgreen\033[0m"` ]
-}
 
 
