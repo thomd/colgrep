@@ -16,7 +16,7 @@ def help_colors():
 	'''
 	help text of available color names
 	'''
-	color_list = ", ".join(map((lambda color: (color, color + " (default)")[color is default_color]), colors.keys()))
+	color_list = ", ".join(map((lambda color: (color, color + " (default)")[color is default_color]), sorted(colors.keys())))
 	return "highlighting color: %s" % color_list
 
 def colorize(args):
