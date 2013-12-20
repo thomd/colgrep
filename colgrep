@@ -30,8 +30,18 @@ def colorize(args):
 		out = exp.sub(color + "\g<1>" + reset, line)
 		sys.stdout.write(out)
 
+class ColgrepArgumentParser(argparse.ArgumentParser):
+	'''
+	overriding 'error' method in order to display the help message if colgrep is
+	called without arguments
+	'''
+	def error(self, message):
+		# sys.stderr.write('error: %sn' % message)
+		self.print_help()
+		sys.exit(2)
+
 def main():
-	parser = argparse.ArgumentParser(description="to always recognize what's important!")
+	parser = ColgrepArgumentParser(description="to always recognize what's important!")
 	parser.add_argument('pattern', nargs='+', metavar='PATTERN', help='pattern to be highlighted')
 	parser.add_argument('-c', dest='color', help=help_colors())
 	args = parser.parse_args()
