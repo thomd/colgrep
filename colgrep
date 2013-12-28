@@ -20,12 +20,18 @@ colors = {
 default_color = 'green'
 reset = '\033[0m'
 
+
+# helper functions ############################################################
+
 def help_colors():
 	'''
 	help text of available color names
 	'''
 	color_list = ", ".join(map((lambda color: (color, color + " (default)")[color is default_color]), sorted(colors.keys())))
 	return "highlighting color: %s" % color_list
+
+
+# core functions ##############################################################
 
 def colorize(args):
 	'''
@@ -37,6 +43,9 @@ def colorize(args):
 	for line in sys.stdin.readlines():
 		out = exp.sub(color + "\g<1>" + reset, line)
 		sys.stdout.write(out)
+
+
+# command line arguments ######################################################
 
 class ColgrepArgumentParser(argparse.ArgumentParser):
 	'''
