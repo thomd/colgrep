@@ -9,6 +9,8 @@ import sys
 import re
 import argparse
 
+__version__ = '0.1'
+
 colors = {
 	'yellow': '\033[0;33m',
 	'blue': '\033[0;34m',
@@ -50,6 +52,7 @@ def main():
 	parser = ColgrepArgumentParser(description="to always recognize what's important!")
 	parser.add_argument('pattern', nargs='+', metavar='PATTERN', help='pattern to be highlighted')
 	parser.add_argument('-c', dest='color', help=help_colors())
+	parser.add_argument('--version', action='version', version='%(prog)s ' + __version__)
 	args = parser.parse_args()
 	colorize(args)
 
