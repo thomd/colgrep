@@ -8,6 +8,7 @@ for usage, run ``colgrep -h``
 import sys
 import re
 import argparse
+import signal
 
 __version__ = '0.1'
 
@@ -30,6 +31,11 @@ def help_colors():
 	color_list = ", ".join(map((lambda color: (color, color + " (default)")[color is default_color]), sorted(colors.keys())))
 	return "highlighting color: %s" % color_list
 
+def trap_sigint():
+	'''
+	exit on interrupt (Ctrl-C)
+	'''
+	signal.signal(signal.SIGINT, lambda *args: sys.exit(1))
 
 # core functions ##############################################################
 
@@ -66,4 +72,5 @@ def main():
 	colorize(args)
 
 if __name__ == '__main__':
+	trap_sigint()
 	main()
