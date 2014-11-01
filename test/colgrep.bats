@@ -11,7 +11,7 @@ load test_helper
 @test "list all available colors in the help message for the color option" {
   run colgrep -h
   [ $status -eq 0 ]
-  [ "$(echo "$output" | grep -- 'blue, green (default), red, yellow')" ]
+  [ "$(echo "$output" | grep -- 'blue, green (default), grey, red, yellow')" ]
 }
 
 @test "color a pattern within a string from STDIN with the default color" {
