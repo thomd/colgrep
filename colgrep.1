@@ -1,22 +1,58 @@
-.TH "COLGREP" "1" "November 2013" "0.1" ""
+.TH "COLGREP" "1" "November 2014" "0.1" ""
 .SH "NAME"
-\fBcolgrep\fR \- a lightweigth colorizer for STDOUT pipe
-.P
-to always recognize what\'s important!
+\fBcolgrep\fR \- colorize a stdin stream
 .SH SYNOPSIS
 .P
-\fBcolgrep\fR [\fB\-i\fR] <\fIpattern\fR> [\fIpattern\fR \.\.\.] [\fI\-c\fR \fIcolor\fR]
-.br
-\fBcolgrep\fR [\fIoptions\fR]
+\fBcolgrep\fR [\fB\-h\fR] [\fB\-c\fR COLOR] [\fB\-b\fR] [\fB\-i\fR] [\fB\-v\fR] <\fIPATTERN\fR> [\fIPATTERN\fR \.\.\.]  
 .SH DESCRIPTION
 .P
-TODO
+A lightweigth colorizer for a STDIN stream\. Like grep, but prints all lines\.
 .SH OPTIONS
 .P
-TODO
+\fB\-c\fR
+    highlight color: blue, green (default), grey, red, yellow
+.P
+\fB\-b\fR
+    colorize background
+.P
+\fB\-i\fR
+    ignore case
+.P
+\fB\-v\fR
+    invert match
 .SH EXAMPLES
 .P
-TODO
+Highlight current calendar date in cal(1):
+.P
+.RS 2
+.EX
+  cal | colgrep $(date +%e) \-c red
+.EE
+.RE
+.P
+Highlight UDP request when using tcpdump(1):
+.P
+.RS 2
+.EX
+  tcpdump | colgrep UDP
+.EE
+.RE
+.P
+Highlight all HTTP redirects when requesting google\.de:
+.P
+.RS 2
+.EX
+  curl \-sIL google\.de | colgrep \-bi location
+.EE
+.RE
+.P
+Highlight all 404 requests in an apache access\.log:
+.P
+.RS 2
+.EX
+  tail \-f /var/log/apache/access\.log | colgrep " 404 " \-c red
+.EE
+.RE
 .SH AUTHOR
 .P
 \fBThomas Duerr\fR (thomduerr@gmail\.com)
