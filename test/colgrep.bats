@@ -102,3 +102,12 @@ load test_helper
   }
 }
 
+@test "color a pattern using tail(1)" {
+  echo "foobarbaz" > test.txt
+  tail test.txt | {
+    run colgrep bar
+    [ $status -eq 0 ]
+    [ "${lines[0]}" == `echo -e "foo\033[0;32mbar\033[0mbaz"` ]
+  }
+}
+

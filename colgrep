@@ -48,22 +48,27 @@ def colorize(args):
 	'''Create a regular expression of all search pattern and replace every pattern
 	surounded by ansi-color directives in every line.
 	'''
-        if(args.backgroundColor):
+        if args.backgroundColor:
 	        color = background_colors.get(args.color, background_colors.get(default_color))
         else:
 	        color = colors.get(args.color, colors.get(default_color))
         pattern = "(" + "|".join(args.pattern) + ")"
-        if(args.ignore):
+        if args.ignore:
 	        exp = re.compile(pattern, re.IGNORECASE)
         else:
 	        exp = re.compile(pattern)
-	for line in sys.stdin.readlines():
-                if(args.invert):
-		        out = color + exp.sub(reset + "\g<1>" + color, line)
-                else:
-		        out = exp.sub(color + "\g<1>" + reset, line)
-		sys.stdout.write(out)
-
+        while True:
+	        line = sys.stdin.readline()
+                if line == '':
+                        break
+                try:
+                        if args.invert:
+		                out = color + exp.sub(reset + "\g<1>" + color, line)
+                        else:
+		                out = exp.sub(color + "\g<1>" + reset, line)
+		        sys.stdout.write(out)
+                except:
+                        pass
 
 # command line arguments ######################################################
 
