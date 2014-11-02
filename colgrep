@@ -78,7 +78,7 @@ class ColgrepArgumentParser(argparse.ArgumentParser):
 def main():
 	trap_sigint()
 	parser = ColgrepArgumentParser(description="to always recognize what's important!")
-	parser.add_argument('pattern', nargs='+', metavar='PATTERN', help='pattern to be highlighted')
+	parser.add_argument('pattern', nargs='+', metavar='PATTERN', help='pattern (String or Regular Expression)')
 	parser.add_argument('-c', action='store', dest='color', help=help_colors())
 	parser.add_argument('-b', action='store_true', default=False, dest='backgroundColor', help='colorize background')
         parser.add_argument('-i', action='store_true', default=False, dest='ignore', help='ignore case')
