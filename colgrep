@@ -16,7 +16,7 @@ colors = {
 	'yellow': '\033[0;33m',
 	'blue': '\033[0;34m',
 	'red': '\033[0;31m',
-	'green': '\033[0;32m'
+        'green': '\033[0;32m'
 }
 default_color = 'green'
 reset = '\033[0m'
@@ -48,7 +48,10 @@ def colorize(args):
         else:
 	        exp = re.compile(pattern)
 	for line in sys.stdin.readlines():
-		out = exp.sub(color + "\g<1>" + reset, line)
+                if(args.invert):
+		        out = color + exp.sub(reset + "\g<1>" + color, line)
+                else:
+		        out = exp.sub(color + "\g<1>" + reset, line)
 		sys.stdout.write(out)
 
 
@@ -68,6 +71,7 @@ def main():
 	parser.add_argument('pattern', nargs='+', metavar='PATTERN', help='pattern to be highlighted')
 	parser.add_argument('-c', dest='color', help=help_colors())
         parser.add_argument('-i', action='store_true', default=False, dest='ignore', help='ignore case')
+        parser.add_argument('-v', action='store_true', default=False, dest='invert', help='invert match')
 	parser.add_argument('--version', action='version', version='%(prog)s ' + __version__)
 	args = parser.parse_args()
 	colorize(args)

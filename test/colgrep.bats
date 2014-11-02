@@ -46,6 +46,14 @@ load test_helper
   }
 }
 
+@test "color multiple patterns using multiple pipes" {
+  echo "foobarfoobaz" | colgrep bar | {
+    run colgrep baz
+    [ $status -eq 0 ]
+    [ "${lines[0]}" == `echo -e "foo\033[0;32mbar\033[0mfoo\033[0;32mbaz\033[0m"` ]
+  }
+}
+
 @test "color a pattern using a regular expression" {
   echo "foo[200]bar[404]foo" | {
     run colgrep "\[\d+\]"
@@ -75,6 +83,14 @@ load test_helper
     run colgrep bar
     [ $status -eq 0 ]
     [ "${lines[0]}" == `echo -e "foobAr"` ]
+  }
+}
+
+@test "color invert pattern using the -v option" {
+  echo "aaafoobarfoobazaaa" | {
+    run colgrep -v foo
+    [ $status -eq 0 ]
+    [ "${lines[0]}" == `echo -e "\033[0;32maaa\033[0mfoo\033[0;32mbar\033[0mfoo\033[0;32mbazaaa"` ]
   }
 }
 
