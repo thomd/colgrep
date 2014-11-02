@@ -94,3 +94,11 @@ load test_helper
   }
 }
 
+@test "color a pattern with a specific background color" {
+  echo "foobarbaz" | {
+    run colgrep bar -bc red
+    [ $status -eq 0 ]
+    [ "${lines[0]}" == `echo -e "foo\033[0;30;41mbar\033[0mbaz"` ]
+  }
+}
+
