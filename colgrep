@@ -42,7 +42,11 @@ def colorize(args):
 	surounded by ansi-color directives in every line.
 	'''
 	color = colors.get(args.color, colors.get(default_color))
-	exp = re.compile("(" + "|".join(args.pattern) + ")")
+        pattern = "(" + "|".join(args.pattern) + ")"
+        if(args.ignore):
+	        exp = re.compile(pattern, re.IGNORECASE)
+        else:
+	        exp = re.compile(pattern)
 	for line in sys.stdin.readlines():
 		out = exp.sub(color + "\g<1>" + reset, line)
 		sys.stdout.write(out)
@@ -63,6 +67,7 @@ def main():
 	parser = ColgrepArgumentParser(description="to always recognize what's important!")
 	parser.add_argument('pattern', nargs='+', metavar='PATTERN', help='pattern to be highlighted')
 	parser.add_argument('-c', dest='color', help=help_colors())
+        parser.add_argument('-i', action='store_true', default=False, dest='ignore', help='ignore case')
 	parser.add_argument('--version', action='version', version='%(prog)s ' + __version__)
 	args = parser.parse_args()
 	colorize(args)
