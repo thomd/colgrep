@@ -18,11 +18,15 @@ See man page for options
 
 Hightlight errors and warnings in a streaming error log in red
 
-    tail -f error.log | colgrep error warn -c red
+    tail -f access.log | colgrep 404 401 -c red
+
+<img src="https://raw.githubusercontent.com/thomd/colgrep/images/colgrep2.png">
 
 Highlight HTTP redirects
 
-    curl -sIL google.com | colgrep Location
+    curl -sIL google.de | colgrep Location
+
+<img src="https://raw.githubusercontent.com/thomd/colgrep/images/colgrep1.png">
 
 ###  Installation
 
