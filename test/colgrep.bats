@@ -120,3 +120,12 @@ load test_helper
   }
 }
 
+@test "color whole line on match and highlight pattern" {
+  echo "foobarbaz" | {
+    run colgrep -lb bar
+    echo "out: $status"
+    [ $status -eq 0 ]
+    [ "${lines[0]}" == `echo -e "\033[0;32mfoo\033[0;30;42mbar\033[0;32mbaz\033[0m"` ]
+  }
+}
+

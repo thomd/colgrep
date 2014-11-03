@@ -4,11 +4,15 @@
 
 A lightweigth colorizer for a STDIN stream. Like grep, but prints all lines.
 
-To always recognize what's important!
+> To always recognize what's important!
 
 ### Syntax
 
-    colgrep [PATTERN [PATTERN ...]] [-c COLOR]
+    colgrep [-h] [-c COLOR] [-b] [-l] [-i] [-v] [--version] PATTERN [PATTERN ...]
+
+See man page for options
+
+    man colgrep
 
 ### Examples
 
@@ -18,7 +22,7 @@ Hightlight errors and warnings in a streaming error log in red
 
 Highlight HTTP redirects
 
-    curl -IL google.com | colgrep Location
+    curl -sIL google.com | colgrep Location
 
 ###  Installation
 

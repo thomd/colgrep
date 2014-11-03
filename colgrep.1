@@ -3,7 +3,7 @@
 \fBcolgrep\fR \- colorize a stdin stream
 .SH SYNOPSIS
 .P
-\fBcolgrep\fR [\fB\-h\fR] [\fB\-c\fR COLOR] [\fB\-b\fR] [\fB\-i\fR] [\fB\-v\fR] <\fIPATTERN\fR> [\fIPATTERN\fR \.\.\.]  
+\fBcolgrep\fR [\fB\-h\fR] [\fB\-c\fR COLOR] [\fB\-b\fR] [\fB\-l\fR] [\fB\-i\fR] [\fB\-v\fR] <\fIPATTERN\fR> [\fIPATTERN\fR \.\.\.]  
 .SH DESCRIPTION
 .P
 A lightweigth colorizer for a STDIN stream\. Like grep, but prints all lines\.
@@ -20,6 +20,9 @@ A lightweigth colorizer for a STDIN stream\. Like grep, but prints all lines\.
 .P
 \fB\-v\fR
     invert match
+.P
+\fB\-l\fR
+    colorize whole line
 .SH EXAMPLES
 .P
 Highlight current calendar date in cal(1):

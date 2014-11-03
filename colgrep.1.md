@@ -2,7 +2,7 @@
 
 ## SYNOPSIS
 
-**colgrep** [**-h**] [**-c** COLOR] [**-b**] [**-i**] [**-v**] <*PATTERN*> [*PATTERN* ...]  
+**colgrep** [**-h**] [**-c** COLOR] [**-b**] [**-l**] [**-i**] [**-v**] <*PATTERN*> [*PATTERN* ...]  
 
 ## DESCRIPTION
 
@@ -20,6 +20,9 @@ A lightweigth colorizer for a STDIN stream. Like grep, but prints all lines.
 
 **-v**
     invert match
+
+**-l**
+    colorize whole line
 
 ## EXAMPLES
 Highlight current calendar date in cal(1):

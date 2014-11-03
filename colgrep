@@ -37,7 +37,7 @@ def colorize(args):
 	surounded by ansi-color directives in every line.
 	'''
 	color   = colors.get(args.color, colors.get(default_color))
-        c       = (0, 1)[args.backgroundColor]
+        c       = (0, 1)[args.bgColor]
         flag    = (0, re.IGNORECASE)[args.ignore]
 
         exp     = re.compile('(' + '|'.join(args.pattern) + ')', flag)
@@ -51,7 +51,11 @@ def colorize(args):
 		                out = color[c] + exp.sub(reset + '\g<1>' + color[c], line)
                         else:
                                 if(args.colorLine and exp.search(line)):
-                                        out = color[c] + lineExp.sub('\g<1>' + reset, line)
+                                        if args.bgColor:
+                                                out = color[0] + exp.sub(color[c] + '\g<1>' + color[0], line)
+                                                out = lineExp.sub('\g<1>' + reset, out)
+                                        else:
+                                                out = color[c] + lineExp.sub('\g<1>' + reset, line)
                                 else:
 		                        out = exp.sub(color[c] + '\g<1>' + reset, line)
 		        sys.stdout.write(out)
@@ -71,7 +75,7 @@ def main():
 	parser = ColgrepArgumentParser(description="to always recognize what's important!")
 	parser.add_argument('pattern', nargs='+', metavar='PATTERN', help='pattern (String or Regular Expression)')
 	parser.add_argument('-c', action='store', dest='color', help=help_colors())
-	parser.add_argument('-b', action='store_true', default=False, dest='backgroundColor', help='colorize background')
+	parser.add_argument('-b', action='store_true', default=False, dest='bgColor', help='colorize background')
 	parser.add_argument('-l', action='store_true', default=False, dest='colorLine', help='colorize whole line on match')
         parser.add_argument('-i', action='store_true', default=False, dest='ignore', help='ignore case')
         parser.add_argument('-v', action='store_true', default=False, dest='invert', help='invert match')
