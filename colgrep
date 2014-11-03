@@ -12,24 +12,14 @@ import signal
 __version__ = '0.1'
 
 colors = {
-	'grey': '\033[1;30m',
-	'yellow': '\033[0;33m',
-	'blue': '\033[0;34m',
-	'red': '\033[0;31m',
-        'green': '\033[0;32m'
-}
-background_colors = {
-	'grey': '\033[1;37;40m',
-	'yellow': '\033[0;30;43m',
-	'blue': '\033[0;30;44m',
-	'red': '\033[0;30;41m',
-        'green': '\033[0;30;42m'
+	'grey':   ('\033[1;30m', '\033[1;37;40m'),
+	'yellow': ('\033[0;33m', '\033[0;30;43m'),
+	'blue':   ('\033[0;34m', '\033[0;30;44m'),
+	'red':    ('\033[0;31m', '\033[0;30;41m'),
+        'green':  ('\033[0;32m', '\033[0;30;42m')
 }
 default_color = 'green'
 reset = '\033[0m'
-
-
-# helper functions ############################################################
 
 def help_colors():
 	'''Help text of available color names
@@ -42,35 +32,31 @@ def trap_sigint():
 	'''
 	signal.signal(signal.SIGINT, lambda *args: sys.exit(1))
 
-# core functions ##############################################################
-
 def colorize(args):
 	'''Create a regular expression of all search pattern and replace every pattern
 	surounded by ansi-color directives in every line.
 	'''
-        if args.backgroundColor:
-	        color = background_colors.get(args.color, background_colors.get(default_color))
-        else:
-	        color = colors.get(args.color, colors.get(default_color))
-        pattern = "(" + "|".join(args.pattern) + ")"
-        if args.ignore:
-	        exp = re.compile(pattern, re.IGNORECASE)
-        else:
-	        exp = re.compile(pattern)
+	color   = colors.get(args.color, colors.get(default_color))
+        c       = (0, 1)[args.backgroundColor]
+        flag    = (0, re.IGNORECASE)[args.ignore]
+
+        exp     = re.compile('(' + '|'.join(args.pattern) + ')', flag)
+        lineExp = re.compile('(.)$')
+
         while True:
 	        line = sys.stdin.readline()
-                if line == '':
-                        break
+                if not line: break
                 try:
                         if args.invert:
-		                out = color + exp.sub(reset + "\g<1>" + color, line)
+		                out = color[c] + exp.sub(reset + '\g<1>' + color[c], line)
                         else:
-		                out = exp.sub(color + "\g<1>" + reset, line)
+                                if(args.colorLine and exp.search(line)):
+                                        out = color[c] + lineExp.sub('\g<1>' + reset, line)
+                                else:
+		                        out = exp.sub(color[c] + '\g<1>' + reset, line)
 		        sys.stdout.write(out)
                 except:
                         pass
-
-# command line arguments ######################################################
 
 class ColgrepArgumentParser(argparse.ArgumentParser):
 	'''Overriding 'error' method in order to display the help message if colgrep is
@@ -86,6 +72,7 @@ def main():
 	parser.add_argument('pattern', nargs='+', metavar='PATTERN', help='pattern (String or Regular Expression)')
 	parser.add_argument('-c', action='store', dest='color', help=help_colors())
 	parser.add_argument('-b', action='store_true', default=False, dest='backgroundColor', help='colorize background')
+	parser.add_argument('-l', action='store_true', default=False, dest='colorLine', help='colorize whole line on match')
         parser.add_argument('-i', action='store_true', default=False, dest='ignore', help='ignore case')
         parser.add_argument('-v', action='store_true', default=False, dest='invert', help='invert match')
 	parser.add_argument('--version', action='version', version='%(prog)s ' + __version__)
