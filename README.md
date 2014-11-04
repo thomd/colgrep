@@ -16,13 +16,13 @@ See man page for options
 
 ### Examples
 
-#### Highlight errors and warnings in a streaming error log in red
+Highlight 404 and 401 requests in an Apache access.log in red
 
     tail -f access.log | colgrep 404 401 -c red
 
 <img src="https://raw.githubusercontent.com/thomd/colgrep/images/colgrep2.png">
 
-#### Highlight HTTP redirects
+Highlight HTTP redirects
 
     curl -sIL google.de | colgrep Location
 
