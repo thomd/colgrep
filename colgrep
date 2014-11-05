@@ -9,7 +9,7 @@ import re
 import argparse
 import signal
 
-__version__ = '0.1'
+__version__ = '1.0'
 
 colors = {
 	'grey':   ('\033[1;30m', '\033[1;37;40m'),
@@ -79,7 +79,7 @@ def main():
 	parser.add_argument('-l', action='store_true', default=False, dest='colorLine', help='colorize whole line on match')
         parser.add_argument('-i', action='store_true', default=False, dest='ignore', help='ignore case')
         parser.add_argument('-v', action='store_true', default=False, dest='invert', help='invert match')
-	parser.add_argument('--version', action='version', version='%(prog)s ' + __version__)
+	parser.add_argument('--version', action='version', version=__version__)
 	args = parser.parse_args()
 	colorize(args)
 

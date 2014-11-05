@@ -1,7 +1,7 @@
 DESTDIR ?= /usr/local
 BINDIR = ${DESTDIR}/bin
 MANDIR = ${DESTDIR}/share/man
-VERSION := "0.1"
+VERSION = '1.0'
 
 install:
 	install -d ${BINDIR}
@@ -22,5 +22,3 @@ colgrep.1: colgrep.1.md
 	marked-man --version=${VERSION} colgrep.1.md > colgrep.1
 
 .PHONY: install uninstall test man
-
-
