@@ -14,6 +14,11 @@ See man page for options
 
     man colgrep
 
+###  Installation
+
+    make test
+    make install
+
 ### Examples
 
 Highlight 404 and 401 requests in an Apache access.log in red
@@ -24,11 +29,7 @@ Highlight 404 and 401 requests in an Apache access.log in red
 
 Highlight HTTP redirects
 
-    curl -sIL google.de | colgrep Location
+    curl -sIL google.de | colgrep -l Location
 
 <img src="https://raw.githubusercontent.com/thomd/colgrep/images/colgrep1.png">
 
-###  Installation
-
-    make test
-    make install
