@@ -12,76 +12,76 @@ import signal
 __version__ = '1.0'
 
 colors = {
-	'grey':   ('\033[1;30m', '\033[1;37;40m'),
-	'yellow': ('\033[0;33m', '\033[0;30;43m'),
-	'blue':   ('\033[0;34m', '\033[0;30;44m'),
-	'red':    ('\033[0;31m', '\033[0;30;41m'),
-        'green':  ('\033[0;32m', '\033[0;30;42m')
+    'grey':   ('\033[1;30m', '\033[1;37;40m'),
+    'yellow': ('\033[0;33m', '\033[0;30;43m'),
+    'blue':   ('\033[0;34m', '\033[0;30;44m'),
+    'red':    ('\033[0;31m', '\033[0;30;41m'),
+    'green':  ('\033[0;32m', '\033[0;30;42m')
 }
 default_color = 'green'
 reset = '\033[0m'
 
 def help_colors():
-	'''Help text of available color names
-	'''
-	color_list = ", ".join(map((lambda color: (color, color + " (default)")[color is default_color]), sorted(colors.keys())))
-	return "highlighting color: %s" % color_list
+    '''Help text of available color names
+    '''
+    color_list = ", ".join(map((lambda color: (color, color + " (default)")[color is default_color]), sorted(colors.keys())))
+    return "highlighting color: %s" % color_list
 
 def trap_sigint():
-	'''Exit on interrupt (Ctrl-C)
-	'''
-	signal.signal(signal.SIGINT, lambda *args: sys.exit(1))
+    '''Exit on interrupt (Ctrl-C)
+    '''
+    signal.signal(signal.SIGINT, lambda *args: sys.exit(1))
 
 def colorize(args):
-	'''Create a regular expression of all search pattern and replace every pattern
-	surounded by ansi-color directives in every line.
-	'''
-	color   = colors.get(args.color, colors.get(default_color))
-        c       = (0, 1)[args.bgColor]
-        flag    = (0, re.IGNORECASE)[args.ignore]
+    '''Create a regular expression of all search pattern and replace every pattern
+    surounded by ansi-color directives in every line.
+    '''
+    color = colors.get(args.color, colors.get(default_color))
+    c = (0, 1)[args.bgColor]
+    flag = (0, re.IGNORECASE)[args.ignore]
 
-        exp     = re.compile('(' + '|'.join(args.pattern) + ')', flag)
-        lineExp = re.compile('(.)$')
+    exp = re.compile('(' + '|'.join(args.pattern) + ')', flag)
+    lineExp = re.compile('(.)$')
 
-        while True:
-	        line = sys.stdin.readline()
-                if not line: break
-                try:
-                        if args.invert:
-		                out = color[c] + exp.sub(reset + '\g<1>' + color[c], line)
-                        else:
-                                if(args.colorLine and exp.search(line)):
-                                        if args.bgColor:
-                                                out = color[0] + exp.sub(color[c] + '\g<1>' + color[0], line)
-                                                out = lineExp.sub('\g<1>' + reset, out)
-                                        else:
-                                                out = color[c] + lineExp.sub('\g<1>' + reset, line)
-                                else:
-		                        out = exp.sub(color[c] + '\g<1>' + reset, line)
-		        sys.stdout.write(out)
-                except:
-                        pass
+    while True:
+        line = sys.stdin.readline()
+        if not line: break
+        try:
+            if args.invert:
+                out = color[c] + exp.sub(reset + '\g<1>' + color[c], line)
+            else:
+                if(args.colorLine and exp.search(line)):
+                    if args.bgColor:
+                        out = color[0] + exp.sub(color[c] + '\g<1>' + color[0], line)
+                        out = lineExp.sub('\g<1>' + reset, out)
+                    else:
+                        out = color[c] + lineExp.sub('\g<1>' + reset, line)
+                else:
+                    out = exp.sub(color[c] + '\g<1>' + reset, line)
+            sys.stdout.write(out)
+        except:
+            pass
 
 class ColgrepArgumentParser(argparse.ArgumentParser):
-	'''Overriding 'error' method in order to display the help message if colgrep is
-	called without arguments
-	'''
-	def error(self, message):
-		self.print_help()
-		sys.exit(2)
+    '''Overriding 'error' method in order to display the help message if colgrep is
+    called without arguments
+    '''
+    def error(self, message):
+        self.print_help()
+        sys.exit(2)
 
 def main():
-	trap_sigint()
-	parser = ColgrepArgumentParser(description="to always recognize what's important!")
-	parser.add_argument('pattern', nargs='+', metavar='PATTERN', help='pattern (String or Regular Expression)')
-	parser.add_argument('-c', action='store', dest='color', help=help_colors())
-	parser.add_argument('-b', action='store_true', default=False, dest='bgColor', help='colorize background')
-	parser.add_argument('-l', action='store_true', default=False, dest='colorLine', help='colorize whole line on match')
-        parser.add_argument('-i', action='store_true', default=False, dest='ignore', help='ignore case')
-        parser.add_argument('-v', action='store_true', default=False, dest='invert', help='invert match')
-	parser.add_argument('--version', action='version', version=__version__)
-	args = parser.parse_args()
-	colorize(args)
+    trap_sigint()
+    parser = ColgrepArgumentParser(description="to always recognize what's important!")
+    parser.add_argument('pattern', nargs='+', metavar='PATTERN', help='pattern (String or Regular Expression)')
+    parser.add_argument('-c', action='store', dest='color', help=help_colors())
+    parser.add_argument('-b', action='store_true', default=False, dest='bgColor', help='colorize background')
+    parser.add_argument('-l', action='store_true', default=False, dest='colorLine', help='colorize whole line on match')
+    parser.add_argument('-i', action='store_true', default=False, dest='ignore', help='ignore case')
+    parser.add_argument('-v', action='store_true', default=False, dest='invert', help='invert match')
+    parser.add_argument('--version', action='version', version=__version__)
+    args = parser.parse_args()
+    colorize(args)
 
 if __name__ == '__main__':
-	main()
+    main()
