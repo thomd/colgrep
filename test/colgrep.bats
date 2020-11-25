@@ -2,7 +2,7 @@
 
 load test_helper
 
-@test "display the help message if colgep is called without an argument" {
+@test "display the help message if colgrep is called without an argument" {
   run colgrep
   [ $status -eq 2 ]
   [[ "${lines[0]}" =~ ^usage: ]]
