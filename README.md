@@ -6,6 +6,11 @@ A lightweigth colorizer for a STDIN stream. Like grep, but prints all lines.
 
 > To always recognize what's important!
 
+###  Installation
+
+    make test
+    make install BINDIR=$HOME/bin MANDIR=$HOME/man
+
 ### Syntax
 
     colgrep [-h] [-c COLOR] [-b] [-l] [-i] [-v] [--version] PATTERN [PATTERN ...]
@@ -13,11 +18,6 @@ A lightweigth colorizer for a STDIN stream. Like grep, but prints all lines.
 See man page for options
 
     man colgrep
-
-###  Installation
-
-    make test
-    make install
 
 ### Examples
 

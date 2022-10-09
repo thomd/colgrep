@@ -1,6 +1,5 @@
-DESTDIR ?= /usr/local
-BINDIR = ${DESTDIR}/bin
-MANDIR = ${DESTDIR}/share/man
+BINDIR ?= /usr/local/bin
+MANDIR ?= /usr/local/share/man
 VERSION = '1.0'
 
 install:
